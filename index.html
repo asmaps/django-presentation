@@ -48,16 +48,15 @@ if( window.location.search.match( /print-pdf/gi ) ) {
             <img src="django/logo.svg" style="background: none; border: none; box-shadow: none; margin-bottom: 50px">
             <h1>Einführung in Django</h1>
             <h3>Was ist Django und wofür braucht man das?</h3>
-            <p>
-            <small>made by Arne Schauf <a href="https://www.twitter.com/asmaps">@asmaps</a></small>
-            </p>
+            <p><small>made by Arne Schauf <a href="https://www.twitter.com/asmaps">@asmaps</a></small></p>
+            <p style="text-align:right"><small>20.04.2014 12:00h - EasterHegg 2014</small></p>
         </section>
 
         <section>
             <h2>Übersicht</h2>
             <ol>
                 <li>Was ist Django?</li>
-                <li>urls.py</li>
+                <li>URLConf</li>
                 <li>Views</li>
                 <li>ORM &amp; Models</li>
                 <li>Forms &amp; Validierung</li>
@@ -65,6 +64,7 @@ if( window.location.search.match( /print-pdf/gi ) ) {
                 <li>Admin Interface</li>
                 <li>SyncDB &amp; Migrations</li>
                 <li>Hilfreiche Apps</li>
+                <li>Development</li>
                 <li>Deployment</li>
                 <li>Seiten in Django</li>
                 <li>Alternativen</li>
@@ -90,14 +90,16 @@ if( window.location.search.match( /print-pdf/gi ) ) {
                 <p><small>* 23.1.1910</small><small style="padding-left: 2em">✝ 16.5.1953</small></p>
                 <aside data-markdown class="notes">
                     <script type="text/template">
-                        * Gitarrist, Komponist und Bandleader
-                        * aus Paris
-                        * Begründer des europäischen Jazz
+* Gitarrist, Komponist und Bandleader
+* aus Paris
+* Begründer des europäischen Jazz
                     </script>
                 </aside>
             </section>
             <section>
-                <blockquote style="margin-top:40px;margin-bottom:40px">"The Web framework for perfectionists with deadlines."</blockquote>
+                <blockquote style="margin-top:40px;margin-bottom:40px" cite="https://www.djangoproject.com/">
+                    The Web framework for perfectionists with deadlines. <small>Django makes it easier to build better Web apps more quickly and with less code.</small>
+                </blockquote>
                 <ul>
                     <li class="fragment roll-in">High-level Webdevelopment Framework</li>
                     <li class="fragment roll-in">Komplett in Python geschrieben</li>
@@ -109,13 +111,14 @@ if( window.location.search.match( /print-pdf/gi ) ) {
             <section>
                 <h3>MVT - Model, View, Template(, Controller)</h3>
                 <ul>
-                    <li class="fragment roll-in"><span style="color:light-green">Model:</span> Verbindung zur DB durch den ORM</li>
-                    <li class="fragment roll-in">View: Verarbeitung eines Requests</li>
-                    <li class="fragment roll-in">Template: Rendern von HTML mit Variablen</li>
-                    <li class="fragment roll-in">(Controller: URL-Dispatcher)</li>
+                    <li class="fragment roll-in"><u>Model:</u> Verbindung zur DB durch den ORM</li>
+                    <li class="fragment roll-in"><u>View:</u> Verarbeitung eines Requests</li>
+                    <li class="fragment roll-in"><u>Template:</u> Rendern von HTML aus Templates</li>
+                    <li class="fragment roll-in">(<u>Controller:</u> URL-Dispatcher)</li>
                 </ul>
             </section>
             <section data-state="request-response">
+                <h3>Der Weg eines Requests</h3>
                 <p id="request-response">
             </section>
         </section>
@@ -123,6 +126,51 @@ if( window.location.search.match( /print-pdf/gi ) ) {
         <section>
             <section>
                 <h1>urls.py</h1>
+                <aside class="notes">
+Bereits Fragen?
+                </aside>
+            </section>
+            <section>
+                <h2>urls.py</h2>
+                <pre>
+<code data-trim class="python">
+from django.conf.urls import patterns, include, url
+
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns(
+    '',
+    url(r'^allauth/', include('allauth.urls')),
+    url(r'^accounts/', include('accounts.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^', include('main.urls')),
+)
+</code>
+                </pre>
+            </section>
+            <section>
+                <h2>main/urls.py</h2>
+                <pre>
+<code data-trim class="python">
+from django.conf.urls import patterns, url
+from django.views.generic import TemplateView
+from main.views import (
+    HomeView, HelpView, AboutView, ...)
+...
+
+urlpatterns = patterns(
+    '',
+    url(r'^$', HomeView.as_view(), name="home"),
+    url(r'^about/$', AboutView.as_view(), name="about"),
+    url(r'^legal/$',
+        TemplateView.as_view(template_name='main/legal.html'),
+        name="legal"),
+    url(r'^help/$', HelpView.as_view(), name="help"),
+    ...
+)
+</code>
+                </pre>
             </section>
         </section>
 
