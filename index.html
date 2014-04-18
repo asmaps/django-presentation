@@ -76,7 +76,6 @@ if( window.location.search.match( /print-pdf/gi ) ) {
             </aside>
         </section>
 
-        <!-- Example of nested vertical slides -->
         <section>
             <section>
                 <img src="django/logo.svg" style="background: none; border: none; box-shadow: none; margin-bottom: 50px">
@@ -127,13 +126,12 @@ if( window.location.search.match( /print-pdf/gi ) ) {
             <section>
                 <h1>urls.py</h1>
                 <aside class="notes">
-Bereits Fragen?
+                    Bereits Fragen?
                 </aside>
             </section>
             <section>
                 <h2>urls.py</h2>
-                <pre>
-<code data-trim class="python">
+                <pre><code data-trim class="python">
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
@@ -146,13 +144,11 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('main.urls')),
 )
-</code>
-                </pre>
+                </code></pre>
             </section>
             <section>
                 <h2>main/urls.py</h2>
-                <pre>
-<code data-trim class="python">
+                <pre><code data-trim class="python">
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 from main.views import (
@@ -169,14 +165,92 @@ urlpatterns = patterns(
     url(r'^help/$', HelpView.as_view(), name="help"),
     ...
 )
-</code>
-                </pre>
+                </code></pre>
             </section>
         </section>
 
         <section>
             <section>
                 <h1>Views</h1>
+            </section>
+            <section>
+                <h2>Function based views (FBV)</h2>
+                <p>Eine Python-Funktion, der der Request und evtl. URL-Parameter übergeben werden</p>
+                <pre><code data-trim class="python">
+# urls.py
+
+url(r'^evaluate/(?P&lt;id&gt;\d+)/$', 'main.views.evaluate'),
+                </code></pre>
+                <pre><code data-trim class="python">
+# views.py
+
+@login_required
+def evaluate(request, id):
+    return render_to_response(
+        'evaluate/evaluate.html',
+        {
+            'questionnaire' : Questionnaire.objects.get(id=id),
+            'active'        : 'evaluate',
+        },
+        context_instance=RequestContext(request)
+    )
+                </code></pre>
+            </section>
+            <section>
+                <h2>Class based views (CBV)</h2>
+                <ul>
+                    <li class="fragment roll-in">deutlich komfortabler als FBV</li>
+                    <li class="fragment roll-in">beinhalten Standard-Funktionalität</li>
+                    <li class="fragment roll-in">vorgefertigte GenericViews für Standard Use Cases</li>
+                    <li class="fragment roll-in">leicht wiederverwendbar</li>
+                    <li class="fragment roll-in">Tip: <a href="http://ccbv.co.uk">ccbv.co.uk</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2>Beispiel TemplateView</h2>
+                <pre><code data-trim class="python">
+# urls.py
+
+url(r'^about/$', AboutView.as_view(), name="about"),
+                </code></pre>
+                <pre><code data-trim class="python">
+# views.py
+
+from django.views.generic import TemplateView
+
+class AboutView(TemplateView):
+    template_name = "main/about.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AboutView, self).get_context_data(*args, **kwargs)
+        context['nav_about'] = True
+        return context
+                </code></pre>
+            </section>
+            <section>
+                <h2>Beispiel DetailView</h2>
+                <pre><code data-trim class="python">
+# urls.py
+
+url(r'^(?P&lt;name&gt;[a-zA-Z0-9_\-]+)/$',
+    HostDetailView.as_view(), name="info"),
+                </code></pre>
+                <pre><code data-trim class="python">
+# views.py
+
+from django.views.generic import DetailView
+
+class HostDetailView(DetailView):
+    model = Host
+    template_name = 'host/detail.html'
+    slug_field = 'name'
+    slug_url_kwarg = 'name'
+
+    def get_context_data(self, **kwargs):
+        context = super(HostDetailView, self).get_context_data(**kwargs)
+        context['memory_in_mb'] = context['object'].memory / 1024
+        return context
+                </code></pre>
             </section>
         </section>
 
@@ -273,10 +347,11 @@ urlpatterns = patterns(
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
 Reveal.initialize({
-controls: true,
+controls: false,
 progress: true,
 history: true,
 center: true,
+slideNumber: true,
 
 theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
 transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
