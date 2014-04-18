@@ -33,6 +33,9 @@ if( window.location.search.match( /print-pdf/gi ) ) {
 <!--[if lt IE 9]>
                 <script src="lib/js/html5shiv.js"></script>
                 <![endif]-->
+
+<!-- Custom css -->
+<link rel="stylesheet" href="css/custom.css">
 </head>
 
 <body>
@@ -54,6 +57,8 @@ if( window.location.search.match( /print-pdf/gi ) ) {
             <h2>Übersicht</h2>
             <ol>
                 <li>Was ist Django?</li>
+                <li>urls.py</li>
+                <li>Views</li>
                 <li>ORM &amp; Models</li>
                 <li>Forms &amp; Validierung</li>
                 <li>ModelForms</li>
@@ -102,35 +107,95 @@ if( window.location.search.match( /print-pdf/gi ) ) {
                 </ul>
             </section>
             <section>
-                <h2>Konzept</h2>
                 <h3>MVT - Model, View, Template(, Controller)</h3>
                 <ul>
-                    <li class="fragment roll-in">Model: Verbindung zur DB durch den ORM</li>
+                    <li class="fragment roll-in"><span style="color:light-green">Model:</span> Verbindung zur DB durch den ORM</li>
                     <li class="fragment roll-in">View: Verarbeitung eines Requests</li>
                     <li class="fragment roll-in">Template: Rendern von HTML mit Variablen</li>
                     <li class="fragment roll-in">(Controller: URL-Dispatcher)</li>
                 </ul>
             </section>
             <section data-state="request-response">
-                <h2>Architektur</h2>
                 <p id="request-response">
             </section>
         </section>
 
         <section>
-            <h2>Where to start?</h2>
-            <p>Online-Tutorials:<br><a href="http://twoscoopspress.com/pages/django-tutorials">http://twoscoopspress.com/pages/django-tutorials</a></p>
-            <hr>
-            <p>Buch: <a href="http://www.amazon.de/Two-Scoops-Django-Best-Practices/dp/098146730X">Two Scoops of Django</a></p>
-            <hr>
-            <p>Diese Präsentation:<br><a href="https://www.as-webservices.de/technik/django/">https://www.as-webservices.de/technik/django/</a></p>
+            <section>
+                <h1>urls.py</h1>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h1>Views</h1>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h1>Forms &amp; Validierung</h1>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h1>ModelForms</h1>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h1>Admin Interface</h1>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h1>SyncDB &amp; Migrations</h1>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h1>Hilfreiche Apps</h1>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h1>Deployment</h1>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h1>Django in freier Wildbahn</h1>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h1>Alternativen</h1>
+            </section>
+        </section>
+
+        <section>
+            <h2>Django lernen?</h2>
+            <h3 class="fragment highlight-red">EINFACH MAL AUSPROBIEREN!</h3>
+            <div class="fragment roll-in" style="text-align:left">
+                <p>Offizielle Docs:<br><a href="https://docs.djangoproject.com/" class="indent">https://docs.djangoproject.com</a></p>
+                <p>Online-Tutorials:<br><a href="http://twoscoopspress.com/pages/django-tutorials" class="indent">http://twoscoopspress.com/pages/django-tutorials</a></p>
+                <p>Buch:<br><a href="http://www.amazon.de/Two-Scoops-Django-Best-Practices/dp/098146730X" class="indent">Two Scoops of Django</a></p>
+                <p>Diese Präsentation:<br><a href="https://www.as-webservices.de/technik/django/" class="indent">https://www.as-webservices.de/technik/django/</a></p>
+            </div>
         </section>
 
         <section>
             <h2>Danksagung</h2>
-            <p style="text-align:left">Hakim El Hattab:<br><a style="margin-left:50px" href="https://github.com/hakimel/reveal.js">reveal.js</a></p>
-            <p style="text-align:left">Markus Zapke-Gründemann:<br><a style="margin-left:50px" href="http://www.django-introduction.com/">http://www.django-introduction.com/</a></p>
-<p style="text-align:left"></p>
+            <p style="text-align:left">Reveal.js:<br><a href="https://github.com/hakimel/reveal.js" class="indent">https://github.com/hakimel/reveal.js</a></p>
+            <p style="text-align:left">Markus Zapke-Gründemann:<br><a href="http://www.django-introduction.com/" class="indent">http://www.django-introduction.com/</a></p>
+            <p style="text-align:left">Raphaël.js:<br><a href="http://raphaeljs.com/" class="indent">http://raphaeljs.com/</a></p>
         </section>
         <section>
             <h2>Bildquellen</h2>
