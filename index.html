@@ -262,7 +262,7 @@ class HostDetailView(DetailView):
             <section>
                 <h2>ORM &amp; Models</h2>
                 <ul>
-                    <li>Mapping von Datenbank-Tabellen zu Python-Klassen</li>
+                    <li>Mapping (ORM) von Datenbank-Tabellen zu Python-Klassen (Models)</li>
                     <li class="fragment roll-in">Automatische Datenvalidierung</li>
                     <li class="fragment roll-in">Automatisiertes Anlegen der DB</li>
                     <li class="fragment roll-in">Anlegen/Ändern/Löschen von Datensätzen mit Python-Funktionen</li>
@@ -500,17 +500,66 @@ Installed 0 object(s) from 0 fixture(s)
             <section>
                 <h1>Deployment</h1>
             </section>
+            <section>
+                <h2>Deployment</h2>
+                <p>Webserver:</p>
+                <ul>
+                    <li class="fragment roll-in">Apache (mod_wsgi)</li>
+                    <li class="fragment roll-in">Nginx (Gunicorn + Unix-Socket)</li>
+                    <li class="fragment roll-in">Alle Webserver mit WSGI-Support oder FastCGI</li>
+                </ul>
+                <div class="fragment roll-in">
+                        <hr>
+                        <p>Datenbanken:</p>
+                </div>
+                <ul>
+                    <li class="fragment roll-in">Postgres</li>
+                    <li class="fragment roll-in">MySQL</li>
+                    <li class="fragment roll-in">SQLite</li>
+                    <li class="fragment roll-in">Oracle</li>
+                    <li class="fragment roll-in">Weitere über Third-Party DB-Konnektoren</li>
+                </ul>
+            </section>
         </section>
 
         <section>
             <section>
                 <h1>Django in freier Wildbahn</h1>
             </section>
+            <section>
+                <h2>Django in freier Wildbahn</h2>
+                <div style="float: left; width: 50%;">
+                    <p class="fragment"><a href="http://www.guardiannews.com/">The Guardian</a></p>
+                    <p class="fragment"><a href="http://www.nytimes.com/">The New York Times</a></p>
+                    <p class="fragment"><a href="http://www.washingtonpost.com/">Washington Post</a></p>
+                    <p class="fragment"><a href="http://www.discovery.com/">Discovery Channel</a></p>
+                    <p class="fragment"><a href="http://www.nationalgeographic.com/">National Geographic</a></p>
+                    <p class="fragment"><a href="http://disqus.com/">Disqus</a></p>
+                    <p class="fragment"><a href="http://www.mercedes-benz.com/">Mercedes-Benz</a></p>
+                    <p class="fragment"><a href="http://science.nasa.gov/">NASA Science</a></p>
+                </div>
+                <div style="float: right; width: 50%;">
+                    <p class="fragment"><a href="http://instagr.am/">Instagram</a></p>
+                    <p class="fragment"><a href="http://www.rdio.com/">Rdio</a></p>
+                    <p class="fragment"><a href="https://bitbucket.org/">BitBucket</a></p>
+                    <p class="fragment"><a href="https://addons.mozilla.org/">Mozilla</a></p>
+                    <p class="fragment"><a href="http://ubuntuusers.de/inyoka/">ubuntuusers.de</a></p>
+                    <p class="fragment"><a href="http://redmonk.com/jgovernor/2010/10/22/vmware-ceo-django-rails-open-frameworks-apps-as-commodity-and-the-new-kingmakers/">VMWare</a></p>
+                    <p class="fragment"><a href="https://developer.vodafone.com/">Vodafone</a></p>
+                    <p class="fragment"><a href="https://www.hopper.pw/">hopper.pw</a></p>
+                </div>
+            </section>
         </section>
 
         <section>
             <section>
                 <h1>Alternativen</h1>
+            </section>
+            <section>
+                <h2>Alternativen</h2>
+                <h4>Gefunden auf <a href="http://soyeahdjango.com/post/42687796799/me-imagining-what-microframeworks-are-like">soyeahdjango.com</a></h4>
+                <p>Me imagining what microframeworks are like</p>
+                <p><img src="django/microframeworks.gif" /></p>
             </section>
         </section>
 
