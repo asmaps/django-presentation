@@ -105,6 +105,7 @@ if( window.location.search.match( /print-pdf/gi ) ) {
                     <li class="fragment roll-in">DRY-Prinzip</li>
                     <li class="fragment roll-in">Python 3 Support</li>
                     <li class="fragment roll-in">BSD Lizenz</li>
+                    <li class="fragment roll-in">aktuell Version 1.6.2</li>
                 </ul>
             </section>
             <section>
@@ -199,7 +200,7 @@ def evaluate(request, id):
             <section>
                 <h2>Class based views (CBV)</h2>
                 <ul>
-                    <li class="fragment roll-in">deutlich komfortabler als FBV</li>
+                    <li>deutlich komfortabler als FBV</li>
                     <li class="fragment roll-in">beinhalten Standard-Funktionalität</li>
                     <li class="fragment roll-in">vorgefertigte GenericViews für Standard Use Cases</li>
                     <li class="fragment roll-in">leicht wiederverwendbar</li>
@@ -256,7 +257,109 @@ class HostDetailView(DetailView):
 
         <section>
             <section>
+                <h1>ORM &amp; Models</h1>
+            </section>
+            <section>
+                <h2>ORM &amp; Models</h2>
+                <ul>
+                    <li>Mapping von Datenbank-Tabellen zu Python-Klassen</li>
+                    <li class="fragment roll-in">Automatische Datenvalidierung</li>
+                    <li class="fragment roll-in">Automatisiertes Anlegen der DB</li>
+                    <li class="fragment roll-in">Anlegen/Ändern/Löschen von Datensätzen mit Python-Funktionen</li>
+                    <li class="fragment roll-in">Keine Berührung mit "Raw-SQL"</li>
+                    <li class="fragment roll-in">Wiederverwendung durch Vererbung</li>
+            </section>
+            <section>
+                <h2>Model Beispiel</h2>
+                <pre><code data-trim class="python">
+# models.py
+
+from django.db import models
+
+class Host(models.Model):
+    subdomain = models.CharField(max_length=256, validators=[
+        RegexValidator(
+            regex=r'^(([a-z0-9][a-z0-9\-]*[a-z0-9])|[a-z0-9])$',
+            message='Invalid subdomain: only a-z, 0-9 and - are allowed'
+        ),
+        domain_blacklist_validator])
+    domain = models.ForeignKey(Domain)
+    update_secret = models.CharField(max_length=256)
+    comment = models.CharField(
+        max_length=256, default='', blank=True, null=True)
+                </code></pre>
+            </section>
+            <section>
+                <h2>Model Vererbung Beispiel</h2>
+                <pre><code data-trim class="python">
+# models.py
+
+from django.db import models
+
+class BaseModel(models.Model):
+    last_update = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        abstract = True
+
+class Comment(BaseModel):
+    comment = models.TextField()
+
+class Value(BaseModel):
+    value = models.IntegerField()
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <section>
                 <h1>Forms &amp; Validierung</h1>
+            </section>
+            <section>
+                <h2>Forms &amp; Validierung</h2>
+                <ul>
+                    <li>Automatische Generierung von HTML &lt;form&gt;</li>
+                    <li class="fragment roll-in">"POST-Data to Python"</li>
+                    <li class="fragment roll-in">integrierte Datenvalidierung je nach Feldtyp (Integer, Email, ...)</li>
+                    <li class="fragment roll-in">automatische Sicherheitsmechanismen:<br>Anti-CSRF, Auto-Escaping (XSS, SQL-Injections), ...</li>
+                    <li class="fragment roll-in">Forms automatisch aus Models generieren</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Form Beispiel</h2>
+                <pre><code data-trim class="python">
+# forms.py
+
+from django import forms
+
+class BeginEndForm(forms.Form):
+    begin = forms.DateField()
+    end = forms.DateField()
+                </code></pre>
+                <pre><code data-trim class="python">
+# views.py
+
+from django.views.generic import FormView
+
+class CalcDayDifferenceView(FormView):
+    form_class = BeginEndForm
+
+    def form_valid(self, form):
+        diff = form.cleaned_data['end'] - form.cleaned_data['begin']
+        # do sth with the difference
+        ...
+                </code></pre>
+                <pre><code data-trim class="django">
+{# calc_day_difference.html #}
+...
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" />
+</form>
+....
+                </code></pre>
             </section>
         </section>
 
@@ -264,11 +367,57 @@ class HostDetailView(DetailView):
             <section>
                 <h1>ModelForms</h1>
             </section>
+            <section>
+                <h2>ModelForms</h2>
+                <ul>
+                    <li>Forms automatisch aus Models erstellen</li>
+                    <li class="fragment roll-in">Eingegebene Daten wieder in die DB speichern</li>
+                    <li class="fragment roll-in">Neue Datensätze erstellen</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Model Form Beispiel</h2>
+                <pre><code data-trim class="python">
+# models.py
+
+from django.db import models
+
+class Thing(models.Model):
+    related_thing = models.ForeignKey('Thing', null=True, blank=True)
+    name = models.CharField(max_length=255, help_text)
+                </code></pre>
+                <pre><code data-trim class="python">
+# views.py
+
+from django.views.generic import CreateView
+from .models import Thing
+
+class CreateThingView(CreateView):
+    model = Thing
+                </code></pre>
+
+            </section>
+            <section>
+                <h2>Das Ergebnis</h2>
+                <p><em>Insert screenshot here</em></p>
+            </section>
         </section>
 
         <section>
             <section>
                 <h1>Admin Interface</h1>
+            </section>
+            <section>
+                <h2>Admin Interface</h2>
+                <ul>
+                    <li>Automatisch generiertes Datenbank-Frontend</li>
+                    <li class="fragment roll-in">Anlegen, bearbeiten und löschen von Datensätzen via Webinterface</li>
+                    <li class="fragment roll-in">Praktisch kein Code notwendig</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Admin Interface</h2>
+                <p><em>Insert screenshot here</em></p>
             </section>
         </section>
 
@@ -276,11 +425,74 @@ class HostDetailView(DetailView):
             <section>
                 <h1>SyncDB &amp; Migrations</h1>
             </section>
+            <section>
+                <h2>SyncDB</h2>
+                <ul>
+                    <li>Automatisiertes erstellen der DB aus den Models</li>
+                    <li class="fragment roll-in">Jedes Model entspricht einer Tabelle</li>
+                    <li class="fragment roll-in">Nur ein Terminalbefehl - kein Code oder SQL</li>
+                    <li class="fragment roll-in">Erstellt nur neue Tabellen, aber ändert sie nicht, falls sich das Model geändert hat</li>
+                </ul>
+            </section>
+            <section>
+                <pre style="background-color:black;color:#00FF00">
+asmaps@kallisto ...o-presentation/example_project % python manage.py syncdb
+Creating tables ...
+Creating table django_admin_log
+Creating table auth_permission
+Creating table auth_group_permissions
+Creating table auth_group
+Creating table auth_user_groups
+Creating table auth_user_user_permissions
+Creating table auth_user
+Creating table django_content_type
+Creating table django_session
+<span class="fragment highlight-red">Creating table things_thing</span>
+
+You just installed Django's auth system, which means you don't have any superusers defined.
+Would you like to create one now? (yes/no): yes
+Username (leave blank to use 'asmaps'): 
+Email address: 
+Password: 
+Password (again): 
+Superuser created successfully.
+Installing custom SQL ...
+Installing indexes ...
+Installed 0 object(s) from 0 fixture(s)
+                </pre>
+                <aside class="notes">
+                    Next step: highlight thing line
+                </aside>
+            </section>
+
+            <section>
+                <h2>Migrations</h2>
+                <ul>
+                    <li>Änderungen an Models in DB einspielen</li>
+                    <li class="fragment roll-in">Bisher nur über Third-Party-App "south"</li>
+                    <li class="fragment roll-in">Ab Version 1.7 Bestandteil von Django</li>
+                </ul>
+            </section>
         </section>
 
         <section>
             <section>
                 <h1>Hilfreiche Apps</h1>
+            </section>
+            <section>
+                <h2>Hilfreiche Apps</h2>
+                <ul>
+                    <li>South</li>
+                    <li class="fragment roll-in">django-extensions</li>
+                    <li class="fragment roll-in">Django CMS</li>
+                    <li class="fragment roll-in">django-debug-toolbar</li>
+                    <li class="fragment roll-in">django-braces</li>
+                    <li class="fragment roll-in">gunicorn</li>
+                    <li class="fragment roll-in">django-celery</li>
+                    <li class="fragment roll-in">huey</li>
+                    <li class="fragment roll-in">djangorestframework</li>
+                    <li class="fragment roll-in">uvm....</li>
+                </ul>
             </section>
         </section>
 
