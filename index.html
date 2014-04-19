@@ -58,6 +58,11 @@ if( window.location.search.match( /print-pdf/gi ) ) {
         </section>
 
         <section>
+            <h2>Vortrag unter:</h2>
+            <h3><a href="http://asmaps.github.io/django-presentation/">http://asmaps.github.io/django-presentation/</a></h3>
+        </section>
+
+        <section>
             <h2>Übersicht</h2>
             <ol>
                 <li>Was ist Django?</li>
@@ -379,11 +384,25 @@ from .models import Thing
 class CreateThingView(CreateView):
     model = Thing
                 </code></pre>
+            </section>
+            <section>
+                <h2>Model Form Template</h2>
+                <pre><code data-trim class="django">
+# thing_form.html
 
+<h1>Create Thing</h1>
+<form method="POST">
+    <table>
+        {% csrf_token %}
+        {{ form.as_table }}
+        <tr><td><input type="submit" /></td></tr>
+    </table>
+</form>
+                </code></pre>
             </section>
             <section>
                 <h2>Das Ergebnis</h2>
-                <p><em>Insert screenshot here</em></p>
+                <p><img src="django/thing_form.png" /></p>
             </section>
         </section>
 
@@ -400,8 +419,31 @@ class CreateThingView(CreateView):
                 </ul>
             </section>
             <section>
-                <h2>Admin Interface</h2>
-                <p><em>Insert screenshot here</em></p>
+                <h2>Admin Interface - Code</h2>
+                <pre><code data-trim class="python">
+# admin.py
+
+from django.contrib import admin
+from things.models import Thing
+
+admin.site.register(Thing)
+                </code></pre>
+            </section>
+            <section>
+                <h2>Admin Interface - Login</h2>
+                <p><img src="django/admin_login.png" /></p>
+            </section>
+            <section>
+                <h2>Admin Interface - Übersicht</h2>
+                <p><img src="django/admin_overview.png" /></p>
+            </section>
+            <section>
+                <h2>Admin Interface - Add Thing</h2>
+                <p><img src="django/admin_add_thing.png" /></p>
+            </section>
+            <section>
+                <h2>Admin Interface - Things</h2>
+                <p><img src="django/admin_thing_list.png" /></p>
             </section>
         </section>
 
@@ -420,8 +462,8 @@ class CreateThingView(CreateView):
             </section>
             <section>
                 <pre style="background-color:black;color:#00FF00">
-asmaps@kallisto ...o-presentation/example_project % python manage.py syncdb
-Creating tables ...
+asmaps@kallisto ...o-presentation/example_project % <span class="fragment highlight-current-red">python manage.py syncdb</span>
+<span class="fragment highlight-current-red">Creating tables ...
 Creating table django_admin_log
 Creating table auth_permission
 Creating table auth_group_permissions
@@ -430,22 +472,22 @@ Creating table auth_user_groups
 Creating table auth_user_user_permissions
 Creating table auth_user
 Creating table django_content_type
-Creating table django_session
-<span class="fragment highlight-red">Creating table things_thing</span>
+Creating table django_session</span>
+<span class="fragment highlight-current-red">Creating table things_thing</span>
 
 You just installed Django's auth system, which means you don't have any superusers defined.
-Would you like to create one now? (yes/no): yes
+<span class="fragment highlight-current-red">Would you like to create one now? (yes/no): yes
 Username (leave blank to use 'asmaps'): 
 Email address: 
 Password: 
 Password (again): 
-Superuser created successfully.
+Superuser created successfully.</span>
 Installing custom SQL ...
 Installing indexes ...
 Installed 0 object(s) from 0 fixture(s)
                 </pre>
                 <aside class="notes">
-                    Next step: highlight thing line
+                    highlight parts
                 </aside>
             </section>
 
