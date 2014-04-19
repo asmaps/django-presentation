@@ -61,17 +61,10 @@ if( window.location.search.match( /print-pdf/gi ) ) {
             <h2>Übersicht</h2>
             <ol>
                 <li>Was ist Django?</li>
-                <li>URLConf</li>
-                <li>Views</li>
-                <li>ORM &amp; Models</li>
-                <li>Forms &amp; Validierung</li>
-                <li>ModelForms</li>
-                <li>Admin Interface</li>
-                <li>SyncDB &amp; Migrations</li>
-                <li>Hilfreiche Apps</li>
-                <li>Development</li>
-                <li>Deployment</li>
-                <li>Seiten in Django</li>
+                <li>Komponenten</li>
+                <li>Datenbank</li>
+                <li>Tools</li>
+                <li>Praxiseinsatz</li>
                 <li>Alternativen</li>
                 <li>Where to start?</li>
             </ol>
@@ -106,21 +99,15 @@ if( window.location.search.match( /print-pdf/gi ) ) {
                 </blockquote>
                 <ul>
                     <li class="fragment roll-in">High-level Webdevelopment Framework</li>
-                    <li class="fragment roll-in">Komplett in Python geschrieben</li>
-                    <li class="fragment roll-in">DRY-Prinzip</li>
-                    <li class="fragment roll-in">Python 3 Support</li>
+                    <li class="fragment roll-in">Python</li>
+                    <li class="fragment roll-in">DRY</li>
                     <li class="fragment roll-in">BSD Lizenz</li>
-                    <li class="fragment roll-in">aktuell Version 1.6.2</li>
+                    <li class="fragment roll-in">Version 1.6.2</li>
                 </ul>
             </section>
             <section>
-                <h3>MVT - Model, View, Template(, Controller)</h3>
-                <ul>
-                    <li class="fragment roll-in"><u>Model:</u> Verbindung zur DB durch den ORM</li>
-                    <li class="fragment roll-in"><u>View:</u> Verarbeitung eines Requests</li>
-                    <li class="fragment roll-in"><u>Template:</u> Rendern von HTML aus Templates</li>
-                    <li class="fragment roll-in">(<u>Controller:</u> URL-Dispatcher)</li>
-                </ul>
+                <h1>MVT</h1>
+                <h3>Model, View, Template(, Controller)</h3>
             </section>
             <section data-state="request-response">
                 <h3>Der Weg eines Requests</h3>
@@ -131,9 +118,6 @@ if( window.location.search.match( /print-pdf/gi ) ) {
         <section>
             <section>
                 <h1>urls.py</h1>
-                <aside class="notes">
-                    Bereits Fragen?
-                </aside>
             </section>
             <section>
                 <h2>urls.py</h2>
@@ -181,7 +165,6 @@ urlpatterns = patterns(
             </section>
             <section>
                 <h2>Function based views (FBV)</h2>
-                <p>Eine Python-Funktion, der der Request und evtl. URL-Parameter übergeben werden</p>
                 <pre><code data-trim class="python">
 # urls.py
 
@@ -205,10 +188,10 @@ def evaluate(request, id):
             <section>
                 <h2>Class based views (CBV)</h2>
                 <ul>
-                    <li>deutlich komfortabler als FBV</li>
-                    <li class="fragment roll-in">beinhalten Standard-Funktionalität</li>
-                    <li class="fragment roll-in">vorgefertigte GenericViews für Standard Use Cases</li>
-                    <li class="fragment roll-in">leicht wiederverwendbar</li>
+                    <li>komfortabler als FBV</li>
+                    <li class="fragment roll-in">Standard-Funktionalität wiederverwendbar</li>
+                    <li class="fragment roll-in">Vererbung</li>
+                    <li class="fragment roll-in">Generic Views</li>
                     <li class="fragment roll-in">Tip: <a href="http://ccbv.co.uk">ccbv.co.uk</a></li>
                 </ul>
             </section>
@@ -226,11 +209,6 @@ from django.views.generic import TemplateView
 
 class AboutView(TemplateView):
     template_name = "main/about.html"
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(AboutView, self).get_context_data(*args, **kwargs)
-        context['nav_about'] = True
-        return context
                 </code></pre>
             </section>
             <section>
@@ -238,7 +216,7 @@ class AboutView(TemplateView):
                 <pre><code data-trim class="python">
 # urls.py
 
-url(r'^(?P&lt;name&gt;[a-zA-Z0-9_\-]+)/$',
+url(r'^(?P&lt;slug&gt;[a-zA-Z0-9_\-]+)/$',
     HostDetailView.as_view(), name="info"),
                 </code></pre>
                 <pre><code data-trim class="python">
@@ -249,13 +227,6 @@ from django.views.generic import DetailView
 class HostDetailView(DetailView):
     model = Host
     template_name = 'host/detail.html'
-    slug_field = 'name'
-    slug_url_kwarg = 'name'
-
-    def get_context_data(self, **kwargs):
-        context = super(HostDetailView, self).get_context_data(**kwargs)
-        context['memory_in_mb'] = context['object'].memory / 1024
-        return context
                 </code></pre>
             </section>
         </section>
@@ -267,12 +238,13 @@ class HostDetailView(DetailView):
             <section>
                 <h2>ORM &amp; Models</h2>
                 <ul>
-                    <li>Mapping (ORM) von Datenbank-Tabellen zu Python-Klassen (Models)</li>
-                    <li class="fragment roll-in">Automatische Datenvalidierung</li>
-                    <li class="fragment roll-in">Automatisiertes Anlegen der DB</li>
-                    <li class="fragment roll-in">Anlegen/Ändern/Löschen von Datensätzen mit Python-Funktionen</li>
-                    <li class="fragment roll-in">Keine Berührung mit "Raw-SQL"</li>
-                    <li class="fragment roll-in">Wiederverwendung durch Vererbung</li>
+                    <li>Python to DB Mapping</li>
+                    <li class="fragment roll-in">Datenvalidierung</li>
+                    <li class="fragment roll-in">Anlegen der DB</li>
+                    <li class="fragment roll-in">Anlegen/Ändern/Löschen von Datensätzen</li>
+                    <li class="fragment roll-in">Kein "Raw-SQL"</li>
+                    <li class="fragment roll-in">Vererbung</li>
+                </ul>
             </section>
             <section>
                 <h2>Model Beispiel</h2>
@@ -326,13 +298,17 @@ class Value(BaseModel):
                 <ul>
                     <li>Automatische Generierung von HTML &lt;form&gt;</li>
                     <li class="fragment roll-in">"POST-Data to Python"</li>
-                    <li class="fragment roll-in">integrierte Datenvalidierung je nach Feldtyp (Integer, Email, ...)</li>
-                    <li class="fragment roll-in">automatische Sicherheitsmechanismen:<br>Anti-CSRF, Auto-Escaping (XSS, SQL-Injections), ...</li>
-                    <li class="fragment roll-in">Forms automatisch aus Models generieren</li>
+                    <li class="fragment roll-in">Datenvalidierung</li>
+                    <li class="fragment roll-in">Sicherheitsmechanismen</li>
                 </ul>
+                <aside data-markdown class="notes">
+                    <script type="text/template">
+* Sicherheit: CSRF, Escaping
+                    </script>
+                </aside>
             </section>
             <section>
-                <h2>Form Beispiel</h2>
+                <h2>Form Beispiel 1</h2>
                 <pre><code data-trim class="python">
 # forms.py
 
@@ -355,6 +331,9 @@ class CalcDayDifferenceView(FormView):
         # do sth with the difference
         ...
                 </code></pre>
+            </section>
+            <section>
+                <h2>Form Beispiel 2</h2>
                 <pre><code data-trim class="django">
 {# calc_day_difference.html #}
 ...
@@ -375,7 +354,7 @@ class CalcDayDifferenceView(FormView):
             <section>
                 <h2>ModelForms</h2>
                 <ul>
-                    <li>Forms automatisch aus Models erstellen</li>
+                    <li>Forms aus Models generieren</li>
                     <li class="fragment roll-in">Eingegebene Daten wieder in die DB speichern</li>
                     <li class="fragment roll-in">Neue Datensätze erstellen</li>
                 </ul>
@@ -415,9 +394,9 @@ class CreateThingView(CreateView):
             <section>
                 <h2>Admin Interface</h2>
                 <ul>
-                    <li>Automatisch generiertes Datenbank-Frontend</li>
-                    <li class="fragment roll-in">Anlegen, bearbeiten und löschen von Datensätzen via Webinterface</li>
-                    <li class="fragment roll-in">Praktisch kein Code notwendig</li>
+                    <li>Generiertes Web-Datenbank-Frontend</li>
+                    <li class="fragment roll-in">Anlegen, bearbeiten und löschen</li>
+                    <li class="fragment roll-in">Praktisch kein zusätzlicher Code</li>
                 </ul>
             </section>
             <section>
@@ -433,10 +412,10 @@ class CreateThingView(CreateView):
             <section>
                 <h2>SyncDB</h2>
                 <ul>
-                    <li>Automatisiertes erstellen der DB aus den Models</li>
-                    <li class="fragment roll-in">Jedes Model entspricht einer Tabelle</li>
-                    <li class="fragment roll-in">Nur ein Terminalbefehl - kein Code oder SQL</li>
-                    <li class="fragment roll-in">Erstellt nur neue Tabellen, aber ändert sie nicht, falls sich das Model geändert hat</li>
+                    <li>Automatisiertes anlegen der DB</li>
+                    <li class="fragment roll-in">Model = Tabelle</li>
+                    <li class="fragment roll-in">kein Code oder SQL</li>
+                    <li class="fragment roll-in">Nur neue Tabellen anlegen</li>
                 </ul>
             </section>
             <section>
@@ -475,7 +454,7 @@ Installed 0 object(s) from 0 fixture(s)
                 <ul>
                     <li>Änderungen an Models in DB einspielen</li>
                     <li class="fragment roll-in">Bisher nur über Third-Party-App "south"</li>
-                    <li class="fragment roll-in">Ab Version 1.7 Bestandteil von Django</li>
+                    <li class="fragment roll-in">Ab 1.7 in Django</li>
                 </ul>
             </section>
         </section>
@@ -508,50 +487,47 @@ Installed 0 object(s) from 0 fixture(s)
             <section>
                 <h2>Deployment</h2>
                 <p>Webserver:</p>
-                <ul>
-                    <li class="fragment roll-in">Apache (mod_wsgi)</li>
-                    <li class="fragment roll-in">Nginx (Gunicorn + Unix-Socket)</li>
-                    <li class="fragment roll-in">Alle Webserver mit WSGI-Support oder FastCGI</li>
+                <ul class="fragment roll-in">
+                    <li>Apache (mod_wsgi)</li>
+                    <li>Nginx (Gunicorn + Unix-Socket)</li>
+                    <li>Alle Webserver mit WSGI-Support oder FastCGI</li>
                 </ul>
                 <div class="fragment roll-in">
                         <hr>
                         <p>Datenbanken:</p>
                 </div>
-                <ul>
-                    <li class="fragment roll-in">Postgres</li>
-                    <li class="fragment roll-in">MySQL</li>
-                    <li class="fragment roll-in">SQLite</li>
-                    <li class="fragment roll-in">Oracle</li>
-                    <li class="fragment roll-in">Weitere über Third-Party DB-Konnektoren</li>
+                <ul class="fragment roll-in">
+                    <li>Postgres</li>
+                    <li>MySQL</li>
+                    <li>SQLite</li>
+                    <li>Oracle</li>
+                    <li>Weitere über Third-Party DB-Konnektoren</li>
                 </ul>
             </section>
         </section>
 
         <section>
             <section>
-                <h1>Django in freier Wildbahn</h1>
-            </section>
-            <section>
                 <h2>Django in freier Wildbahn</h2>
-                <div style="float: left; width: 50%;">
-                    <p class="fragment"><a href="http://www.guardiannews.com/">The Guardian</a></p>
-                    <p class="fragment"><a href="http://www.nytimes.com/">The New York Times</a></p>
-                    <p class="fragment"><a href="http://www.washingtonpost.com/">Washington Post</a></p>
-                    <p class="fragment"><a href="http://www.discovery.com/">Discovery Channel</a></p>
-                    <p class="fragment"><a href="http://www.nationalgeographic.com/">National Geographic</a></p>
-                    <p class="fragment"><a href="http://disqus.com/">Disqus</a></p>
-                    <p class="fragment"><a href="http://www.mercedes-benz.com/">Mercedes-Benz</a></p>
-                    <p class="fragment"><a href="http://science.nasa.gov/">NASA Science</a></p>
+                <div style="float: left; width: 50%;" class="fragment">
+                    <p><a href="http://www.guardiannews.com/">The Guardian</a></p>
+                    <p><a href="http://www.nytimes.com/">The New York Times</a></p>
+                    <p><a href="http://www.washingtonpost.com/">Washington Post</a></p>
+                    <p><a href="http://www.discovery.com/">Discovery Channel</a></p>
+                    <p><a href="http://www.nationalgeographic.com/">National Geographic</a></p>
+                    <p><a href="http://disqus.com/">Disqus</a></p>
+                    <p><a href="http://www.mercedes-benz.com/">Mercedes-Benz</a></p>
+                    <p><a href="http://science.nasa.gov/">NASA Science</a></p>
                 </div>
-                <div style="float: right; width: 50%;">
-                    <p class="fragment"><a href="http://instagr.am/">Instagram</a></p>
-                    <p class="fragment"><a href="http://www.rdio.com/">Rdio</a></p>
-                    <p class="fragment"><a href="https://bitbucket.org/">BitBucket</a></p>
-                    <p class="fragment"><a href="https://addons.mozilla.org/">Mozilla</a></p>
-                    <p class="fragment"><a href="http://ubuntuusers.de/inyoka/">ubuntuusers.de</a></p>
-                    <p class="fragment"><a href="http://redmonk.com/jgovernor/2010/10/22/vmware-ceo-django-rails-open-frameworks-apps-as-commodity-and-the-new-kingmakers/">VMWare</a></p>
-                    <p class="fragment"><a href="https://developer.vodafone.com/">Vodafone</a></p>
-                    <p class="fragment"><a href="https://www.hopper.pw/">hopper.pw</a></p>
+                <div style="float: right; width: 50%;" class="fragment">
+                    <p><a href="http://instagr.am/">Instagram</a></p>
+                    <p><a href="http://www.rdio.com/">Rdio</a></p>
+                    <p><a href="https://bitbucket.org/">BitBucket</a></p>
+                    <p><a href="https://addons.mozilla.org/">Mozilla</a></p>
+                    <p><a href="http://ubuntuusers.de/inyoka/">ubuntuusers.de</a></p>
+                    <p><a href="http://redmonk.com/jgovernor/2010/10/22/vmware-ceo-django-rails-open-frameworks-apps-as-commodity-and-the-new-kingmakers/">VMWare</a></p>
+                    <p><a href="https://developer.vodafone.com/">Vodafone</a></p>
+                    <p><a href="https://www.hopper.pw/">hopper.pw</a></p>
                 </div>
             </section>
         </section>
@@ -569,9 +545,10 @@ Installed 0 object(s) from 0 fixture(s)
             <section>
                 <h2>Flask</h2>
                 <ul>
-                    <li class="fragment roll-in">Lightweight Alternative (weniger "Ballast")</li>
-                    <li class="fragment roll-in">Deutlich weniger Funktionen out-of-the-box</li>
-                    <li class="fragment roll-in">Für kleine Projekte ohne DB, User, ... gut geeignet</li>
+                    <li class="fragment roll-in">Lightweight Alternative</li>
+                    <li class="fragment roll-in">weniger Funktionen out-of-the-box</li>
+                    <li class="fragment roll-in">kleine Projekte</li>
+                </ul>
             </section>
         </section>
 
@@ -582,7 +559,7 @@ Installed 0 object(s) from 0 fixture(s)
                 <p>Offizielle Docs:<br><a href="https://docs.djangoproject.com/" class="indent">https://docs.djangoproject.com</a></p>
                 <p>Online-Tutorials:<br><a href="http://twoscoopspress.com/pages/django-tutorials" class="indent">http://twoscoopspress.com/pages/django-tutorials</a></p>
                 <p>Buch:<br><a href="http://www.amazon.de/Two-Scoops-Django-Best-Practices/dp/098146730X" class="indent">Two Scoops of Django</a></p>
-                <p>Diese Präsentation:<br><a href="https://www.as-webservices.de/technik/django/" class="indent">https://www.as-webservices.de/technik/django/</a></p>
+                <p>Diese Präsentation:<br><a href="http://asmaps.github.io/django-presentation/" class="indent">http://asmaps.github.io/django-presentation/</a></p>
             </div>
         </section>
 
@@ -607,9 +584,11 @@ Installed 0 object(s) from 0 fixture(s)
             <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.de"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="django/cc-by-sa.png"></a>
         </section>
         <section>
-            <h3>Vielen Dank für die Aufmerksamkeit</h3>
-            <h2>Fragen?</h2>
+            <h1>The End</h1>
             <p><img src="django/cat.gif" /></p>
+        </section>
+        <section>
+            <h1>Fragen?</h1>
         </section>
     </div>
 
@@ -632,7 +611,7 @@ center: true,
 slideNumber: true,
 
 theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
 
 // Parallax scrolling
 // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
