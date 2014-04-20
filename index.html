@@ -244,8 +244,8 @@ class HostDetailView(DetailView):
                 <h2>ORM &amp; Models</h2>
                 <ul>
                     <li>Python to DB Mapping</li>
+                    <li class="fragment roll-in">Model = Tabelle</li>
                     <li class="fragment roll-in">Datenvalidierung</li>
-                    <li class="fragment roll-in">Anlegen der DB</li>
                     <li class="fragment roll-in">Anlegen/Ändern/Löschen von Datensätzen</li>
                     <li class="fragment roll-in">Kein "Raw-SQL"</li>
                     <li class="fragment roll-in">Vererbung</li>
@@ -313,7 +313,7 @@ class Value(BaseModel):
                 </aside>
             </section>
             <section>
-                <h2>Form Beispiel 1</h2>
+                <h2>Form Beispiel</h2>
                 <pre><code data-trim class="python">
 # forms.py
 
@@ -338,7 +338,7 @@ class CalcDayDifferenceView(FormView):
                 </code></pre>
             </section>
             <section>
-                <h2>Form Beispiel 2</h2>
+                <h2>Form Beispiel Template</h2>
                 <pre><code data-trim class="django">
 {# calc_day_difference.html #}
 ...
@@ -373,7 +373,8 @@ from django.db import models
 
 class Thing(models.Model):
     related_thing = models.ForeignKey('Thing', null=True, blank=True)
-    name = models.CharField(max_length=255, help_text)
+    name = models.CharField(max_length=255,
+                            help_text='The name of the thing')
                 </code></pre>
                 <pre><code data-trim class="python">
 # views.py
@@ -455,7 +456,6 @@ admin.site.register(Thing)
                 <h2>SyncDB</h2>
                 <ul>
                     <li>Automatisiertes anlegen der DB</li>
-                    <li class="fragment roll-in">Model = Tabelle</li>
                     <li class="fragment roll-in">kein Code oder SQL</li>
                     <li class="fragment roll-in">Nur neue Tabellen anlegen</li>
                 </ul>
