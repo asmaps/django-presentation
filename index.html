@@ -108,10 +108,10 @@ if( window.location.search.match( /print-pdf/gi ) ) {
                 </blockquote>
                 <ul>
                     <li class="fragment roll-in">High-level Webdevelopment Framework</li>
-                    <li class="fragment roll-in">Python</li>
+                    <li class="fragment roll-in">Python 2 &amp; 3</li>
                     <li class="fragment roll-in">DRY</li>
                     <li class="fragment roll-in">BSD Lizenz</li>
-                    <li class="fragment roll-in">Version 1.6.2</li>
+                    <li class="fragment roll-in">Version 1.7.1</li>
                 </ul>
             </section>
             <section>
@@ -252,6 +252,7 @@ class HostDetailView(DetailView):
                     <li class="fragment roll-in">Datenvalidierung</li>
                     <li class="fragment roll-in">Anlegen/Ändern/Löschen von Datensätzen</li>
                     <li class="fragment roll-in">Kein "Raw-SQL"</li>
+                    <li class="fragment roll-in">Datenbank unabhängig</li>
                     <li class="fragment roll-in">Vererbung</li>
                 </ul>
             </section>
@@ -283,7 +284,7 @@ class Host(models.Model):
 from django.db import models
 
 class BaseModel(models.Model):
-    last_update = models.DateTimeField(auto_now=True)
+    modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -454,54 +455,39 @@ admin.site.register(Thing)
 
         <section>
             <section>
-                <h1>SyncDB &amp; Migrations</h1>
+                <h1>Migrations</h1>
             </section>
             <section>
-                <h2>SyncDB</h2>
+                <h2>Migrations</h2>
                 <ul>
                     <li>Automatisiertes anlegen der DB</li>
+                    <li class="fragment roll-in">Verfolgen von Änderungen an den Models/am Schema</li>
                     <li class="fragment roll-in">kein Code oder SQL</li>
-                    <li class="fragment roll-in">Nur neue Tabellen anlegen</li>
+                    <li class="fragment roll-in">Bis 1.7 nur über Third-Party-App "south"</li>
+                    <li class="fragment roll-in">Seit 1.7 in Django</li>
                 </ul>
             </section>
             <section>
                 <pre style="background-color:black;color:#00FF00">
-asmaps@kallisto ...o-presentation/example_project % <span class="fragment highlight-current-red">python manage.py syncdb</span>
-<span class="fragment highlight-current-red">Creating tables ...
-Creating table django_admin_log
-Creating table auth_permission
-Creating table auth_group_permissions
-Creating table auth_group
-Creating table auth_user_groups
-Creating table auth_user_user_permissions
-Creating table auth_user
-Creating table django_content_type
-Creating table django_session</span>
-<span class="fragment highlight-current-red">Creating table things_thing</span>
-
-You just installed Django's auth system, which means you don't have any superusers defined.
-<span class="fragment highlight-current-red">Would you like to create one now? (yes/no): yes
-Username (leave blank to use 'asmaps'): 
-Email address: 
-Password: 
-Password (again): 
-Superuser created successfully.</span>
-Installing custom SQL ...
-Installing indexes ...
-Installed 0 object(s) from 0 fixture(s)
+asmaps:~/example_project &gt; <span class="fragment highlight-current-red">python manage.py makemigrations things</span>
+<span class="fragment highlight-current-red">Migrations for 'things':
+  0001_initial.py:
+    - Create model Thing</span>
                 </pre>
-                <aside class="notes">
-                    highlight parts
-                </aside>
             </section>
 
             <section>
-                <h2>Migrations</h2>
-                <ul>
-                    <li>Änderungen an Models in DB einspielen</li>
-                    <li class="fragment roll-in">Bisher nur über Third-Party-App "south"</li>
-                    <li class="fragment roll-in">Ab 1.7 in Django</li>
-                </ul>
+                <pre style="background-color:black;color:#00FF00">
+asmaps:~/example_project &gt; <span class="fragment highlight-current-red">python manage.py migrate</span>
+Operations to perform:
+  Apply all migrations: admin, things, contenttypes, auth, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying sessions.0001_initial... OK
+  Applying things.0001_initial... OK
+                </pre>
             </section>
         </section>
 
@@ -512,8 +498,7 @@ Installed 0 object(s) from 0 fixture(s)
             <section>
                 <h2>Hilfreiche Apps</h2>
                 <ul>
-                    <li>South</li>
-                    <li class="fragment roll-in">django-extensions</li>
+                    <li>django-extensions</li>
                     <li class="fragment roll-in">Django CMS</li>
                     <li class="fragment roll-in">django-debug-toolbar</li>
                     <li class="fragment roll-in">django-braces</li>
@@ -536,6 +521,7 @@ Installed 0 object(s) from 0 fixture(s)
                 <ul class="fragment roll-in">
                     <li>Apache (mod_wsgi)</li>
                     <li>Nginx (Gunicorn + Unix-Socket)</li>
+                    <li>uWSGI</li>
                     <li>Alle Webserver mit WSGI-Support oder FastCGI</li>
                 </ul>
                 <div class="fragment roll-in">
